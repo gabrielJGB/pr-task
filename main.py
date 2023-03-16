@@ -99,8 +99,8 @@ for fecha_num in fechas_cant:
 contenido = json.dumps(fechas_arr)
 
 now = datetime.datetime.now()
-nombre = "datos_"+str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"_"+ str(now.hour)+":"+str(now.minute)+":"+str(now.second)
-ruta = Path(__file__).parent.resolve().joinpath(nombre+'.json')
+# nombre = "datos_"+str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"_"+ str(now.hour)+":"+str(now.minute)+":"+str(now.second)
+ruta = Path(__file__).parent.resolve().joinpath('datos.json')
 archivo = open(ruta, 'w', encoding='utf-8')
 archivo.write(contenido)
 archivo.close()
