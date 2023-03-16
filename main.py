@@ -31,13 +31,14 @@ liga = soup.select("#titulos")[0].text.strip()
 
 fechas_totales = 0
 codigo_liga = 14 # codigo argentina
-fechas_cant = range(1, fechas_totales+1)
 fechas_arr = []
 
 for el in arr:
     if el.has_attr("class"):
         if el["class"][0] == "cfechact" or el["class"][0] == "cfecha":
             fechas_totales = fechas_totales + 1
+
+fechas_cant = range(1, fechas_totales+1)
 
 for fecha_num in fechas_cant:
     link_fecha = "https://www.promiedos.com.ar/verfecha.php?fecha=" + str(fecha_num) + "_"+ str(codigo_liga)
