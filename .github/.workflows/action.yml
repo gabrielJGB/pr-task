@@ -2,10 +2,14 @@ name: run main.py
 
 on:
   schedule:
+<<<<<<< HEAD:.github/.workflows/action.yml
     - cron: '7 10,16,18,20 * * *' 
   push:
     branches:
       - 'main'
+=======
+    - cron: '44 11 2 * 0' # At 00:00 on Monday
+>>>>>>> f419e97f71e0840384e37e33d43c59dbbe69f8ca:.github/workflows/actions.yml
 
 jobs:
   build:
