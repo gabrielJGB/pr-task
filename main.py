@@ -17,29 +17,27 @@ def get_status(class_name):
     else:
         return ""
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
+# import requests
+# import bs4
+
+# liga_nombre = ["primera","inglaterra","francia","italia","espana","alemania","paisesbajos","brasil","uruguay","paraguay","colombia","chile","mexico","usa"]
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
 link = "https://www.promiedos.com.ar/primera"
 res = requests.get(link, headers=headers)
 soup = bs4.BeautifulSoup(res.text, 'html.parser')
 arr = soup.select("#fixtseccion div")
+liga = soup.select("#titulos")[0].text.strip()
 
-# fechas_arr = {"fecha": 1, "partidos": []}
-
-# for el in arr:
-#     if el.has_attr("class"):
-#         if el["class"][0] == "cfechact" or el["class"][0] == "cfecha":
-#             text = el["onclick"]
-#             fechas.append(re.search("\d+_\d+", text)[0])
-
-
-# codigo arg=14 codigo ing=33
-codigo_liga = 14
-fechas_totales = 27
+fechas_totales = 0
+codigo_liga = 14 # codigo argentina
 fechas_cant = range(1, fechas_totales+1)
 fechas_arr = []
 
-# {fecha:1,partidos:[]},{fecha:2,partidos:[]}
+for el in arr:
+    if el.has_attr("class"):
+        if el["class"][0] == "cfechact" or el["class"][0] == "cfecha":
+            fechas_totales = fechas_totales + 1
 
 for fecha_num in fechas_cant:
     link_fecha = "https://www.promiedos.com.ar/verfecha.php?fecha=" + str(fecha_num) + "_"+ str(codigo_liga)
