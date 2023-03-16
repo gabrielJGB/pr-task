@@ -19,7 +19,7 @@ def get_status(class_name):
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
-link = "https://www.promiedos.com.ar/inglaterra"
+link = "https://www.promiedos.com.ar/primera"
 res = requests.get(link, headers=headers)
 soup = bs4.BeautifulSoup(res.text, 'html.parser')
 arr = soup.select("#fixtseccion div")
