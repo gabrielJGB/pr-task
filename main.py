@@ -32,11 +32,14 @@ liga = soup.select("#titulos")[0].text.strip()
 fechas_totales = 0
 codigo_liga = 14 # codigo argentina
 fechas_arr = []
+fecha_act = 1
 
 for el in arr:
     if el.has_attr("class"):
         if el["class"][0] == "cfechact" or el["class"][0] == "cfecha":
             fechas_totales = fechas_totales + 1
+        if el["class"][0] == "cfechact":
+            fecha_act = el.text
 
 fechas_cant = range(1, fechas_totales+1)
 
@@ -48,7 +51,6 @@ for fecha_num in fechas_cant:
     dia = ""
     partidos = 0
     autores_arr =[]
-
     fecha = {"fecha":fecha_num, "partidos":[]}
 
     for i in range(len(partido_arr)):
