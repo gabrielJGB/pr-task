@@ -2,6 +2,7 @@ import requests
 import json
 import bs4
 import datetime
+import re
 from pathlib import Path
 
 
@@ -43,6 +44,8 @@ for el in arr:
 
 fechas_cant = range(1, fechas_totales+1)
 
+
+
 for fecha_num in fechas_cant:
     link_fecha = "https://www.promiedos.com.ar/verfecha.php?fecha=" + str(fecha_num) + "_"+ str(codigo_liga)
     res1 = requests.get(link_fecha, headers=headers)
@@ -50,7 +53,7 @@ for fecha_num in fechas_cant:
     partido_arr = soup1.select("#fixturein tr")
     dia = ""
     partidos = 0
-    autores_arr =[]
+    autores_arr = []
     fecha = {"fecha":fecha_num, "partidos":[]}
 
     for i in range(len(partido_arr)):
@@ -66,29 +69,51 @@ for fecha_num in fechas_cant:
             if partido_arr[i]["class"][0] == "diapart":
                 dia = partido_arr[i].text
         elif partido_arr[i].has_attr("id"):
-        
+            
+            pid = int(partido_arr[i]["id"][1:])
             row = partido_arr[i].select("td")
             estado = get_status(row[0]["class"][0])
             cronometro = row[0].text.strip()
-            escudo_local = row[1].select("img")[0]["src"]
+            hay_ficha = len(row[5].select("a")) > 0
+
             local = row[1].text
-            goles_local = row[2].text
-            rojas_local = len(row[2].select(".roja"))
-            escudo_visitante = row[4].select("img")[0]["src"]
             visitante = row[4].text
-            goles_visitante = row[3].text
+
+            escudo_local = row[1].select("img")[0]["src"]
+            escudo_visitante = row[4].select("img")[0]["src"]
+
+            rojas_local = len(row[2].select(".roja"))
             rojas_visitante = len(row[3].select(".roja"))
 
-            hay_ficha = len(row[5].select("a")) > 0
+            goles_local = ""
+            if row[2].text != "":
+                goles_local = int(row[2].text)
+
+            goles_visitante = ""
+            if row[3].text != "":
+                goles_visitante = int(row[3].text)
+
+            resultado = ""
+            if goles_local > goles_visitante:
+                resultado = "L"
+            elif goles_local < goles_visitante:
+                resultado = "V"
+            elif goles_local == goles_visitante:
+                resultado = "E"
+            else:
+                resultado = ""
+
+            ficha = ""
             if hay_ficha:
-                ficha = row[5].select("a")[0]["href"]
+                f = row[5].select("a")[0]["href"]
+                ficha = re.search("=\w+",f)[0][1:]
             else:
                 ficha = ""
             autores_local = autores_arr[partidos][0][:-2].split("; ")
             autores_visitante = autores_arr[partidos][1][:-2].split("; ")
 
             partidos = partidos+1
-            partido = {"dia":dia,"estado":estado, "cronometro":cronometro, "escudo_local":escudo_local, "local":local, "goles_local":goles_local, "rojas_local":rojas_local,"escudo_visitante":escudo_visitante,"visitante":visitante, "goles_visitante":goles_visitante,"rojas_visitante":rojas_visitante,"ficha":ficha,"autores_local":autores_local,"autores_visitante":autores_visitante}
+            partido = {"id":pid,"dia":dia,"estado":estado, "cronometro":cronometro, "escudo_local":escudo_local, "local":local, "goles_local":goles_local, "rojas_local":rojas_local,"escudo_visitante":escudo_visitante,"visitante":visitante, "goles_visitante":goles_visitante,"rojas_visitante":rojas_visitante,"ficha":ficha,"autores_local":autores_local,"autores_visitante":autores_visitante, "resultado":resultado}
     
         if partido != "":
             fecha["partidos"].append(partido)
@@ -96,16 +121,16 @@ for fecha_num in fechas_cant:
     fechas_arr.append(fecha)
     print(str(fecha_num))
 
-    
-contenido = json.dumps(fechas_arr)
-
 now = datetime.datetime.now()
-# nombre = "datos_"+str(now.year)+"-"+str(now.month)+"-"+str(now.day)+"_"+ str(now.hour)+":"+str(now.minute)+":"+str(now.second)
+updatetime =  str(now.year)+"/"+str(now.month)+"/"+str(now.day)+"_"+ str(now.hour)+":"+str(now.minute)+":"+str(now.second)
+
+main_obj = { "fecha_actual":fecha_act , "fechas":fechas_arr, "actualizado":updatetime }
+contenido = json.dumps(main_obj)
+
 ruta = Path(__file__).parent.resolve().joinpath('datos.json')
 archivo = open(ruta, 'w', encoding='utf-8')
 archivo.write(contenido)
 archivo.close()
-print('Guardado')
 
 
 
