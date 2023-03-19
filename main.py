@@ -98,7 +98,7 @@ for fecha_num in fechas_cant:
                 resultado = "L"
             elif goles_local < goles_visitante:
                 resultado = "V"
-            elif goles_local == goles_visitante:
+            elif goles_local == goles_visitante and goles_local != "" and goles_visitante != "":
                 resultado = "E"
             else:
                 resultado = ""
