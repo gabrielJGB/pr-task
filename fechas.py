@@ -9,7 +9,8 @@ from pathlib import Path
 # ligas = [[15,"copadeliga"],[23,"alemania"],[39,"brasil"]]
 # ligas = [1107,["torneo=1107"],[15,"copadeliga"],[39,"brasil"]]
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'
+    }
 nombre_liga = "copadeliga"
 codigo_liga = 15
 fechas_arr = []
@@ -61,6 +62,8 @@ def crawl_fecha(fecha):
         if partido_arr[i].has_attr("class"):
             if partido_arr[i]["class"][0] == "diapart":
                 dia = partido_arr[i].text
+                dia.replace("á","a").replace("é","e")
+
         elif partido_arr[i].has_attr("id"):
 
             pid = int(partido_arr[i]["id"][1:])
@@ -107,12 +110,12 @@ def crawl_fecha(fecha):
                 f = row[5].select("a")[0]["href"]
                 # ficha = re.search("=\w+",f)[0]
                 # ficha = re.search("ficha=(\w+)&c=14(&v=(\w+))?",f) is not None
-                ficha = re.search("ficha=(\w+)?", f)[1]
+                ficha = re.search("ficha=([^#\&\?]*)?", f)[1]
 
-                hay_video = re.search("v=(\w+)?", f) is not None
+                hay_video = re.search("v=([^#\&\?]*)?", f) is not None
 
                 if hay_video:
-                    video_id = re.search("v=(\w+)?", f)[1]
+                    video_id = re.search("v=([^#\&\?]*)?", f)[1]
 
             autores_local = autores_arr[partidos][0][:-2].split("; ")
             autores_visitante = autores_arr[partidos][1][:-2].split("; ")
@@ -142,11 +145,19 @@ now = datetime.datetime.now()
 updatetime = str(now.year)+"/"+str(now.month)+"/"+str(now.day) + \
     "_" + str(now.hour)+":"+str(now.minute)+":"+str(now.second)
 
-main_obj = {"fecha_actual": fecha_act,
-            "fechas": fechas_arr, "actualizado": updatetime}
+main_obj = {"fecha_actual": fecha_act,"fechas": fechas_arr, "actualizado": updatetime}
 contenido = json.dumps(main_obj)
 
 ruta = Path(__file__).parent.resolve().joinpath('fechas.json')
 archivo = open(ruta, 'w', encoding='utf-8')
 archivo.write(contenido)
 archivo.close()
+
+
+
+# import requests
+# import bs4
+# link = "https://www.promiedos.com.ar/copadeliga"
+# headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
+# res = requests.get(link, headers=headers)
+# soup = bs4.BeautifulSoup(res.text, 'html.parser')

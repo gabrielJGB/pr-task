@@ -2,10 +2,12 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '7 15/1 * * *'
+    - cron: '7 0,1,2,12,13,14,15,16,17,18,19,20,21,22,23 * * *'
 
   workflow_dispatch:
 
+env:
+  TZ: 'America/Argentina/Buenos_Aires'
 
 jobs:
   build:

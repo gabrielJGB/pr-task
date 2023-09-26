@@ -20,6 +20,10 @@ def get_status(class_name):
 
 # import requests
 # import bs4
+# link = "https://www.promiedos.com.ar/copadeliga"
+# headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:95.0) Gecko/20100101 Firefox/95.0'}
+# res = requests.get(link, headers=headers)
+# soup = bs4.BeautifulSoup(res.text, 'html.parser')
 
 # liga_nombre = ["primera","inglaterra","francia","italia","espana","alemania","paisesbajos","brasil","uruguay","paraguay","colombia","chile","mexico","usa"]
 
@@ -128,7 +132,7 @@ main_obj = { "fecha_actual":fecha_act , "fechas":fechas_arr, "actualizado":updat
 contenido = json.dumps(main_obj)
 
 ruta = Path(__file__).parent.resolve().joinpath('datos.json')
-archivo = open(ruta, 'w', encoding='utf-8')
+archivo = open(ruta, 'w', encoding='UTF-8')
 archivo.write(contenido)
 archivo.close()
 
