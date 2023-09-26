@@ -61,8 +61,9 @@ def crawl_fecha(fecha):
         partido = ""
         if partido_arr[i].has_attr("class"):
             if partido_arr[i]["class"][0] == "diapart":
-                dia = partido_arr[i].text
-                dia.replace("á","a").replace("é","e")
+                dia = partido_arr[i].text.replace("Ã¡","á").replace("Ã©","é")
+
+                print(dia)
 
         elif partido_arr[i].has_attr("id"):
 
