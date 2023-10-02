@@ -26,8 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: execute py script # run main.py
+      - name: execute fechas py script
         run: python fechas.py
+
+      - name: execute fichas py script
+        run: python fichas.py
 
       - name: commit files
         run: |
