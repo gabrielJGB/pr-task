@@ -239,11 +239,11 @@ if res.status_code == 200:
     fechas_resp = res.json()
 
     # partidos = [[partido["ficha"],partido["id"]] for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
-    partidos_res = [{"ficha": partido["ficha"], "id":partido["id"], "estado":partido["estado"]}
+    partidos_res = [{"video_id": partido["video_id"], "id":partido["id"], "estado":partido["estado"]}
                     for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
 
 for partido_res in partidos_res:
-    if partido_res["ficha"] != "" and partido_res["estado"] == "finalizado":
+    if partido_res["video_id"] != "":
         for partido_verificar in partidos_verificar:
             if partido_verificar["id"] == partido_res["id"] and partido_verificar["verificado"] == False:
                 ficha_partido = crawl_ficha(
