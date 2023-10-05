@@ -239,7 +239,7 @@ if res.status_code == 200:
     fechas_resp = res.json()
 
     # partidos = [[partido["ficha"],partido["id"]] for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
-    partidos_res = [{"video_id": partido["video_id"], "id":partido["id"], "estado":partido["estado"]}
+    partidos_res = [{"ficha": partido["ficha"],"video_id": partido["video_id"], "id":partido["id"], "estado":partido["estado"]}
                     for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
 
 for partido_res in partidos_res:
