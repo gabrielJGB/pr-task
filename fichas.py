@@ -162,7 +162,7 @@ def get_info_equipo(trs, equipo):
 
 def crawl_stats(stats_elem):
 
-    def handle_stat_elem(div):
+    def handle_stat_elem(div,stat):
         p1 = div[0]
         num_l = int(re.findall("(\d+)%?", p1.text)[0])
         width_l = int(re.findall("width:(\d+)%", p1["style"])[0])
@@ -172,23 +172,27 @@ def crawl_stats(stats_elem):
         width_v = int(re.findall("width:(\d+)%", p2["style"])[0])
 
         return {
-            "local": {
-                "numero": num_l,
-                "width": width_l
-            },
-            "visitante": {
-                "numero": num_v,
-                "width": width_v
-            }
+            "stat":stat,
+            "local_num": num_l,
+            "local_width": width_l,
+            "visit_num": num_v,
+            "visit_width": width_v
         }
 
-    stats = {
-        "posesion": handle_stat_elem(stats_elem[0].select("div")),
-        "tiros_efectivos": handle_stat_elem(stats_elem[1].select("div")),
-        "tiros_total": handle_stat_elem(stats_elem[2].select("div")),
-        "fouls": handle_stat_elem(stats_elem[3].select("div")),
-        "corners": handle_stat_elem(stats_elem[4].select("div"))
-    }
+    # stats = {
+    #     "posesion": handle_stat_elem(stats_elem[0].select("div")),
+    #     "tiros_efectivos": handle_stat_elem(stats_elem[1].select("div")),
+    #     "tiros_total": handle_stat_elem(stats_elem[2].select("div")),
+    #     "fouls": handle_stat_elem(stats_elem[3].select("div")),
+    #     "corners": handle_stat_elem(stats_elem[4].select("div"))
+    # }
+
+    stats = []
+    arr = ["posesion", "tiros_efectivos", "tiros_total", "fouls", "corners"]
+
+    for i in range(0,5):
+        stat_obj = handle_stat_elem(stats_elem[i].select("div"),arr[i])
+        stats.append(stat_obj)
 
     return stats
 
@@ -212,6 +216,8 @@ def crawl_ficha(ficha, pid):
     goles_local = soup.select('#ficha-resultado1')[0].text
     goles_visitante = soup.select('#ficha-resultado2')[0].text
     arbitro = soup.select(".refe span")[0].text.strip()
+    colores_local = re.findall("\:(\#[a-z0-9]+)",soup.select(".nomequipo")[0]["style"])
+    colores_visitante = re.findall("\:(\#[a-z0-9]+)",soup.select(".nomequipo")[1]["style"])
 
 
     local = soup.select(".nomequipo")[0].text
@@ -223,6 +229,7 @@ def crawl_ficha(ficha, pid):
     info_visitante = get_info_equipo(trs, "visitante")
 
     stats = crawl_stats(soup.select("#ficha-estadisticas > div > div"))
+    
 
     ficha_partido = {"local": local, "visitante": visitante, "id_ficha": ficha, "id_partido": pid, "info_local": info_local, "info_visitante": info_visitante, "escudo_local": escudo_local, "escudo_visitante": escudo_visitante,
                      "estado": estado, "goles_local": goles_local, "goles_visitante": goles_visitante, "arbitro": arbitro, "incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]), "estadisticas": stats}
@@ -239,7 +246,7 @@ if res.status_code == 200:
     fechas_resp = res.json()
 
     # partidos = [[partido["ficha"],partido["id"]] for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
-    partidos_res = [{"ficha": partido["ficha"],"video_id": partido["video_id"], "id":partido["id"], "estado":partido["estado"]}
+    partidos_res = [{"ficha": partido["ficha"], "video_id": partido["video_id"], "id":partido["id"], "estado":partido["estado"]}
                     for fecha in fechas_resp["fechas"] for partido in fecha["partidos"]]
 
 for partido_res in partidos_res:
