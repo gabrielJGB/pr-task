@@ -230,9 +230,9 @@ def crawl_ficha(ficha, pid):
 
     stats = crawl_stats(soup.select("#ficha-estadisticas > div > div"))
 
-    ficha_partido = {"id_ficha":ficha,"id_partido":pid,"arbitro":arbitro,"incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]),"estadisticas":stats,"local":{"nombre":local,"colores":colores_local,"escudo":escudo_local,"goles":goles_local,"datos":info_local}}
+    ficha_partido = {"id_ficha":ficha,"id_partido":pid,"arbitro":arbitro,"incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]),"estadisticas":stats,"local":{"nombre":local,"colores":colores_local,"escudo":escudo_local,"goles":goles_local,"datos":info_local},"visitante":{"nombre":visitante,"colores":colores_visitante,"escudo":escudo_visitante,"goles":goles_visitante,"datos":info_visitante}}
 
-    
+
 
     # ficha_partido = {"visitante": visitante, "id_ficha": ficha, "id_partido": pid, "info_local": info_local, "info_visitante": info_visitante, "escudo_local": escudo_local, "escudo_visitante": escudo_visitante,
     #                  "estado": estado, "goles_local": goles_local, "goles_visitante": goles_visitante, "arbitro": arbitro, "incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]), "estadisticas": stats}
