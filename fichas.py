@@ -188,7 +188,7 @@ def crawl_stats(stats_elem):
     # }
 
     stats = []
-    arr = ["posesion", "tiros_efectivos", "tiros_total", "fouls", "corners"]
+    arr = ["Posesión", "Tiros al arco", "Tiros totales", "Faltas", "Corners"]
 
     for i in range(0,5):
         stat_obj = handle_stat_elem(stats_elem[i].select("div"),arr[i])
@@ -229,10 +229,13 @@ def crawl_ficha(ficha, pid):
     info_visitante = get_info_equipo(trs, "visitante")
 
     stats = crawl_stats(soup.select("#ficha-estadisticas > div > div"))
+
+    ficha_partido = {"id_ficha":ficha,"id_partido":pid,"arbitro":arbitro,"incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]),"estadisticas":stats,"local":{"nombre":local,"colores":colores_local,"escudo":escudo_local,"goles":goles_local,"datos":info_local}}
+
     
 
-    ficha_partido = {"local": local, "visitante": visitante, "id_ficha": ficha, "id_partido": pid, "info_local": info_local, "info_visitante": info_visitante, "escudo_local": escudo_local, "escudo_visitante": escudo_visitante,
-                     "estado": estado, "goles_local": goles_local, "goles_visitante": goles_visitante, "arbitro": arbitro, "incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]), "estadisticas": stats}
+    # ficha_partido = {"visitante": visitante, "id_ficha": ficha, "id_partido": pid, "info_local": info_local, "info_visitante": info_visitante, "escudo_local": escudo_local, "escudo_visitante": escudo_visitante,
+    #                  "estado": estado, "goles_local": goles_local, "goles_visitante": goles_visitante, "arbitro": arbitro, "incidencias": sorted(get_incidencias_partido(), key=lambda x: x["minuto"]), "estadisticas": stats}
 
     clear_incidencias_partido()
 
