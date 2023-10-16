@@ -38,7 +38,7 @@ def get_incidencias_partido():
     return incidencias_partido
 
 
-def handle_jugador(tr):
+def handle_jugador(tr,nombre_equipo):
     elem = tr.select("td")
 
     posicion = elem[0].text
@@ -72,10 +72,10 @@ def handle_jugador(tr):
         elif "roja" in img["src"]:
             rojas = rojas + 1
 
-    return {"posicion": posicion, "numero": numero, "esCapitan": esCapitan, "pais": pais, "nombre": nombre, "edad": edad, "altura": altura, "cambio_in": cambio_in, "cambio_out": cambio_out, "lesion": lesion, "goles": goles, "amarillas": amarillas, "rojas": rojas}
+    return {"posicion": posicion, "numero": numero, "esCapitan": esCapitan, "pais": pais, "nombre": nombre, "edad": edad, "altura": altura, "cambio_in": cambio_in, "cambio_out": cambio_out, "lesion": lesion, "goles": goles, "amarillas": amarillas, "rojas": rojas,"equipo":nombre_equipo}
 
 
-def get_info_equipo(trs, equipo):
+def get_info_equipo(trs,equipo, nombre_equipo):
     seccion = 0
     info_equipo = {"titulares": [], "suplentes": [], "tecnico": "", "goles": "",
                    "amarillas": [], "rojas": [], "cambios": [], "incidencias": []}
@@ -125,7 +125,7 @@ def get_info_equipo(trs, equipo):
             seccion = 8
 
         if seccion == 1 and tr.text.strip() != "TITULARES" and tr.text.strip() != "PosN°JugadorEdadAlt(cm)":
-            jugador = handle_jugador(tr)
+            jugador = handle_jugador(tr,nombre_equipo)
             info_equipo["titulares"].append(jugador)
 
         elif seccion == 2:
@@ -134,7 +134,7 @@ def get_info_equipo(trs, equipo):
             seccion = 0
 
         elif seccion == 3 and tr.text.strip() != "SUPLENTES":
-            jugador = handle_jugador(tr)
+            jugador = handle_jugador(tr,nombre_equipo)
             info_equipo["suplentes"].append(jugador)
 
         elif seccion == 4 and tr.text.strip() != "GOLES":
@@ -224,9 +224,9 @@ def crawl_ficha(ficha, pid):
     visitante = soup.select(".nomequipo")[1].text
 
     trs = soup.select("#formacion1 tr")
-    info_local = get_info_equipo(trs, "local")
+    info_local = get_info_equipo(trs, "local",local)
     trs = soup.select("#formacion2 tr")
-    info_visitante = get_info_equipo(trs, "visitante")
+    info_visitante = get_info_equipo(trs, "visitante",visitante)
 
     stats = crawl_stats(soup.select("#ficha-estadisticas > div > div"))
 
