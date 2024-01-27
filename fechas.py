@@ -16,8 +16,10 @@ codigo_liga = 15
 fechas_arr = []
 fecha_act = 1
 
-equipos_info = [{"nombre": "Argentinos", "zona": 1}, {"nombre": "Arsenal", "zona": 1}, {"nombre": "Atl Tucuman", "zona": 1}, {"nombre": "Banfield", "zona": 1}, {"nombre": "Barracas Central", "zona": 1}, {"nombre": "Colon", "zona": 1}, {"nombre": "Gimnasia (LP)", "zona": 1}, {"nombre": "Huracan", "zona": 1}, {"nombre": "Independiente", "zona": 1}, {"nombre": "Instituto", "zona": 1}, {"nombre": "River Plate", "zona": 1}, {"nombre": "Rosario Central", "zona": 1}, {"nombre": "Talleres (C)", "zona": 1}, {"nombre": "Velez", "zona": 1}, {
-    "nombre": "Belgrano", "zona": 2}, {"nombre": "Boca Juniors", "zona": 2}, {"nombre": "Central Cba (SdE)", "zona": 2}, {"nombre": "Def y Justicia", "zona": 2}, {"nombre": "Estudiantes (LP)", "zona": 2}, {"nombre": "Godoy Cruz", "zona": 2}, {"nombre": "Lanus", "zona": 2}, {"nombre": "Newells", "zona": 2}, {"nombre": "Platense", "zona": 2}, {"nombre": "Racing Club", "zona": 2}, {"nombre": "San Lorenzo", "zona": 2}, {"nombre": "Sarmiento (J)", "zona": 2}, {"nombre": "Tigre", "zona": 2}, {"nombre": "Union", "zona": 2}]
+
+
+equipo_info = [{"nombre":"Gimnasia (LP)","zona":1},{"nombre":"Atl Tucuman","zona":1},{"nombre":"Barracas Central","zona":1},{"nombre":"Rosario Central","zona":1},{"nombre":"Velez","zona":1},{"nombre":"Instituto","zona":1},{"nombre":"Riestra","zona":1},{"nombre":"Argentinos","zona":1},{"nombre":"Banfield","zona":1},{"nombre":"Huracan","zona":1},{"nombre":"Ind Rivadavia","zona":1},{"nombre":"Independiente","zona":1},{"nombre":"River Plate","zona":1},{"nombre":"Talleres (C)","zona":1},{"nombre":"Newells","zona":2},{"nombre":"Sarmiento (J)","zona":2},{"nombre":"Tigre","zona":2},{"nombre":"Belgrano","zona":2},{"nombre":"Boca Juniors","zona":2},{"nombre":"Def y Justicia","zona":2},{"nombre":"Estudiantes (LP)","zona":2},{"nombre":"Godoy Cruz","zona":2},{"nombre":"Lanus","zona":2},{"nombre":"Platense","zona":2},{"nombre":"Racing Club","zona":2},{"nombre":"San Lorenzo","zona":2},{"nombre":"Union","zona":2},{"nombre":"Central Cba (SdE)","zona":2}]
+
 
 
 def get_zona(equipo):
